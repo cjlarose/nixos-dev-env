@@ -29,6 +29,7 @@
   environment.systemPackages = with pkgs; [
     git
     tmux
+    handbrake
   ];
 
   security.sudo.wheelNeedsPassword = false;
