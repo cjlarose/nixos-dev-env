@@ -83,6 +83,7 @@
     trueColorTest,
     nvr,
     chicken-smoothie-automation,
+    nixos-generators,
   }:
     let
       additionalPackages = system: {
@@ -121,7 +122,7 @@
     in {
       nixosConfigurations = (
         import ./nixos-configurations {
-          inherit nixpkgs sharedOverlays additionalPackages home-manager pce impermanence disko;
+          inherit nixpkgs sharedOverlays additionalPackages home-manager pce impermanence disko nixos-generators;
         }
       );
 
