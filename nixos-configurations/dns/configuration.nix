@@ -1,4 +1,16 @@
-{ nixpkgs, sharedOverlays, stateVersion, system, additionalPackages, pkgs, ... }: {
+{ nixpkgs, sharedOverlays, stateVersion, system, additionalPackages, pkgs, ... }:
+let
+  toothyshouseHosts = pkgs.runCommand "toothyshouse-hosts" { } ''
+    ${pkgs.gawk}/bin/awk '
+      $1 !~ /^#/ {
+        for (i = 2; i <= NF; i++) {
+          if ($i ~ /\.toothyshouse\.com$/) print $1, $i;
+        }
+      }
+    ' ${additionalPackages.${system}.intranetHosts}/hosts > "$out"
+  '';
+in
+{
   imports = [
     ./hardware-configuration.nix
   ];
@@ -44,6 +56,11 @@
 
   services.zfs.expandOnBoot = "all";
 
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.openssh = {
     enable = true;
     settings = {
@@ -73,7 +90,6 @@
         bootstrap_dns = ["1.1.1.1" "1.0.0.1"];
         upstream_dns = [
           "https://dns.cloudflare.com/dns-query"
-          "[/cjlarose.dev/]192.168.2.105"
           "[/toothyshouse.com/]192.168.2.105"
         ];
       };
@@ -84,14 +100,21 @@
     enable = true;
     resolveLocalQueries = false;
     settings = {
-      addn-hosts = "${additionalPackages.${system}.intranetHosts}/hosts";
-      bind-interfaces = true;
+      addn-hosts = "${toothyshouseHosts}";
+      bind-dynamic = true;
       bogus-priv = true;
       domain-needed = true;
+      interface = [ "tailscale0" ];
+      local = [ "/toothyshouse.com/" ];
       listen-address = ["192.168.2.105"];
       no-resolv = true;
       server = [];
     };
+  };
+
+  systemd.services.dnsmasq = {
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
   };
 
   programs.ssh.startAgent = true;

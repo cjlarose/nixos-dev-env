@@ -17,6 +17,7 @@ in {
           {
             directory = "/etc/nixos";
           }
+          "/var/lib/tailscale"
         ];
       };
     })
