@@ -107,6 +107,7 @@ in
       interface = [ "tailscale0" ];
       local = [ "/toothyshouse.com/" ];
       listen-address = ["192.168.2.105"];
+      no-hosts = true;
       no-resolv = true;
       server = [];
     };
