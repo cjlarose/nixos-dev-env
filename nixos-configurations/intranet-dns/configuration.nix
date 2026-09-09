@@ -53,6 +53,7 @@ in
       bind-dynamic = true;
       interface = [ "tailscale0" ];
       local = [ "/cjlarose.dev/" ];
+      no-hosts = true;
       no-resolv = true;
       server = [ ];
     };

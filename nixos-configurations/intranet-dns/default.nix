@@ -23,6 +23,7 @@
       source = "/nix/store";
       mountPoint = "/nix/.ro-store";
       proto = "virtiofs";
+      readOnly = true;
     }
     {
       tag = "persist-nix-rw-store";
