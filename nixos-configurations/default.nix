@@ -94,7 +94,7 @@ let
       specialArgs = {
         inherit sharedOverlays additionalPackages microvm;
         home-manager = home-manager-26-05;
-        stateVersion = "25.11";
+        stateVersion = "26.05";
         system = "x86_64-linux";
       };
       modules = [ ./intranet-dns ];
