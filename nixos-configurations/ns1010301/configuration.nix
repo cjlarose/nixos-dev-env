@@ -331,6 +331,19 @@
     fsType = "zfs";
   };
 
+  fileSystems."/var/lib/microvms/intranet-dns/nix-rw-store" = {
+    device = "tank/microvms/intranet-dns/nix-rw-store";
+    fsType = "zfs";
+  };
+  fileSystems."/var/lib/microvms/intranet-dns/tailscale" = {
+    device = "tank/microvms/intranet-dns/tailscale";
+    fsType = "zfs";
+  };
+  fileSystems."/var/lib/microvms/intranet-dns/secrets" = {
+    device = "tank/microvms/intranet-dns/secrets";
+    fsType = "zfs";
+  };
+
   services.restic.backups = {
     minecraft-mellowcatfe = {
       initialize = true;
